@@ -4,6 +4,47 @@ import 'package:flutter_svg/flutter_svg.dart';
 class LeaguePage extends StatelessWidget {
   const LeaguePage({super.key});
 
+  // Widget pour afficher un Rectangle1 avec un label par-dessus (comme fond)
+  Widget buildLabeledRectangleBackground(String label) {
+    return Stack(
+      alignment: Alignment.centerLeft,
+      children: [
+        SvgPicture.asset('assets/images/Rectangle1.svg'),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Text(
+            label,
+            style: const TextStyle(
+              color: Colors.grey,
+              fontSize: 16,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  // Un groupe "colonne" de 3 Rectangle1 avec labels + rectangle simple à droite
+  Widget buildGroup() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            buildLabeledRectangleBackground("Finished:"),
+            const SizedBox(height: 8),
+            buildLabeledRectangleBackground("Minigames:"),
+            const SizedBox(height: 8),
+            buildLabeledRectangleBackground("Penalties:"),
+          ],
+        ),
+        const SizedBox(width: 8),
+        SvgPicture.asset('assets/images/Rectangle.svg'),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,45 +82,29 @@ class LeaguePage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
-                  // Barre de recherche
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: TextField(
-                      style: const TextStyle(color: Colors.black),
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(vertical: 14),
-                        border: InputBorder.none,
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: SvgPicture.asset(
-                            'assets/images/search.svg',
-                            width: 20,
-                            height: 20,
-                          ),
-                        ),
-                        hintText: 'Search',
-                        hintStyle: const TextStyle(color: Color.fromARGB(255, 236, 234, 234)),
-                      ),
-                    ),
-                  ),
+                  
                 ],
               ),
             ),
           ),
 
-          // Corps de la page
-          const Expanded(
-            child: Center(
-              child: Text(
-                'Contenu de la phase de league',
-                style: TextStyle(fontSize: 18),
+          // Corps de la page : 4 groupes côte à côte
+          Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(1),
+                  child: Column(
+                    children: [
+                      buildGroup(),
+                      const SizedBox(height: 20),
+                      buildGroup(),
+                      const SizedBox(height: 20),
+                      buildGroup(),
+                      const SizedBox(height: 20),
+                      buildGroup(),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ),
         ],
       ),
     );
